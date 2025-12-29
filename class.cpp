@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <unordered_set>
 #include <vector>
 
@@ -34,4 +35,19 @@ public:
         }
     }
 
+    void updateGrade(string name, int grade){
+        grades[name].grade = grade;
+    }
+
+    void deleteGrade(string name){
+        grades.erase(name);
+    }
+
+    void calculateAverage(){
+        int total = 0;
+        for (const auto& [name, g] : grades){
+            total += g.grade * g.weight;
+        }
+    }
+    
 };
