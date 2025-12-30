@@ -42,6 +42,10 @@ public:
         }
         return total;
     }
+
+    const unordered_map<string, Grade>& getGrades() const {
+        return grades;
+    }
 };
 
 float getFloatInput(const string& prompt) {
