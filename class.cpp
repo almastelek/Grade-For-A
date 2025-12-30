@@ -2,125 +2,93 @@
 #include <string>
 #include <unordered_map>
 #include <iomanip>
+#include <vector>
 
-using std::string, std::unordered_map, std::cout, std::cin, std::stof, std::fixed, std::setprecision;
+using std::string, std::unordered_map, std::cout, std::cin, std::fixed, std::setprecision;
 
-struct grade_t 
-{
-    string assignment_name;
-    float grade;
+struct Grade {
+    float score;
     float weight;
 };
 
-class Class
-{
-static unordered_map<string, grade_t> grades;
+class GradeManager {
+private:
+    // Removed static: now each GradeManager instance is unique
+    unordered_map<string, Grade> grades;
 
 public:
-    Class() {}
-
-    void addGrade(string name, float grade, float weight){
-        grade_t g;
-
-        g.assignment_name = name;
-        g.grade = grade;
-        g.weight = weight;
-
-        grades[name] = g;
-    }
-
-    void showGrades(){
-        cout << fixed << setprecision(4);
-        for (const auto& [name, g] : grades){
-            cout << name << " " << g.grade << " " << g.weight << "\n";
+    // Use 'const' for methods that don't modify the map
+    void showGrades() const {
+        cout << fixed << setprecision(2);
+        if (grades.empty()) {
+            cout << "No grades recorded.\n";
+            return;
+        }
+        for (const auto& [name, g] : grades) {
+            cout << "- " << name << ": " << g.score << " (Weight: " << g.weight << ")\n";
         }
     }
 
-    void updateGrade(string name, float grade){
-        grades[name].grade = grade;
+    void addOrUpdate(const string& name, float score, float weight) {
+        grades[name] = {score, weight};
     }
 
-    void deleteGrade(string name){
-        grades.erase(name);
+    bool remove(const string& name) {
+        return grades.erase(name) > 0; // returns true if something was deleted
     }
 
-    float calculateAverage(){
+    float calculateAverage() const {
+        if (grades.empty()) return 0.0f;
         float total = 0;
-        for (const auto& [name, g] : grades){
-            total += g.grade * g.weight;
+        for (const auto& [name, g] : grades) {
+            total += g.score * g.weight;
         }
         return total;
     }
-    
 };
 
-unordered_map<string, grade_t> Class::grades;
-
-int main(){
-    Class dmt = Class();
-
-    string input;
-
-    while (1){
-        cout << "Select: <add>, <show>, <update>, <delete>, <average>, <quit>\n";
-        cin >> input;
-
-        if (input == "add") {
-
-            cout << "Input: <name> <grade> <weight>\n";
-            string name, grade, weight;
-            cin >> name >> grade >> weight;
-            float g = stof(grade), w = stof(weight);
-            //
-            cout << name << " " << g << " " << w << "\n";
-            //
-
-            dmt.addGrade(name, g, w);
-
-            cout << name << " added.\n";
-
-        } else if (input == "show") {
-
-            dmt.showGrades();
-
-        } else if (input == "update") {
-
-            cout << "Input: <name> <grade>\n";
-            string name, grade;
-            cin >> name >> grade;
-            float g = stof(grade);
-
-            dmt.updateGrade(name, g);
-
-            cout << name << " updated to " << g << "\n";
-
-        } else if (input == "delete") {
-
-            cout << "Input: <name>\n";
-            string name;
-            cin >> name;
-
-            dmt.deleteGrade(name);
-
-            cout << name << " deleted.\n";
-
-        } else if (input == "average") {
-
-            cout << fixed << setprecision(4);
-            cout << "Average: " << dmt.calculateAverage() << "\n";
-
-        } else if (input == "quit") {
-
-            break;
-
-        } else {
-
-            cout << "Invalid input\n";
-
+// Helper function to safely get numeric input
+float getFloatInput(const string& prompt) {
+    string raw;
+    while (true) {
+        cout << prompt;
+        cin >> raw;
+        try {
+            return std::stof(raw);
+        } catch (...) {
+            cout << "Invalid number. Try again.\n";
         }
     }
-
-    return 0;
 }
 
-// main();
+int main() {
+    GradeManager dmt;
+    string choice;
+
+    while (true) {
+        cout << "\n[add, show, delete, average, quit]: ";
+        cin >> choice;
+
+        if (choice == "add") {
+            string name;
+            cout << "Assignment name: ";
+            cin.ignore(); // Clear the newline from the buffer before getline
+            std::getline(cin, name); 
+            
+            float g = getFloatInput("Grade: ");
+            float w = getFloatInput("Weight (e.g., 0.25): ");
+            
+            dmt.addOrUpdate(name, g, w);
+        } 
+        else if (choice == "show") {
+            dmt.showGrades();
+        } 
+        else if (choice == "average") {
+            cout << "Current Average: " << dmt.calculateAverage() << "\n";
+        } 
+        else if (choice == "quit") {
+            break;
+        }
+    }
+    return 0;
+}
