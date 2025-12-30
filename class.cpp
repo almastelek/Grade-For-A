@@ -2,7 +2,6 @@
 #include <string>
 #include <unordered_map>
 #include <iomanip>
-#include <vector>
 
 using std::string, std::unordered_map, std::cout, std::cin, std::fixed, std::setprecision;
 
@@ -13,11 +12,9 @@ struct Grade {
 
 class GradeManager {
 private:
-    // Removed static: now each GradeManager instance is unique
     unordered_map<string, Grade> grades;
 
 public:
-    // Use 'const' for methods that don't modify the map
     void showGrades() const {
         cout << fixed << setprecision(2);
         if (grades.empty()) {
@@ -34,7 +31,7 @@ public:
     }
 
     bool remove(const string& name) {
-        return grades.erase(name) > 0; // returns true if something was deleted
+        return grades.erase(name) > 0;
     }
 
     float calculateAverage() const {
@@ -47,7 +44,6 @@ public:
     }
 };
 
-// Helper function to safely get numeric input
 float getFloatInput(const string& prompt) {
     string raw;
     while (true) {
@@ -66,27 +62,30 @@ int main() {
     string choice;
 
     while (true) {
-        cout << "\n[add, show, delete, average, quit]: ";
+        cout << "[add, show, delete, average, quit]: ";
         cin >> choice;
 
         if (choice == "add") {
             string name;
             cout << "Assignment name: ";
-            cin.ignore(); // Clear the newline from the buffer before getline
+            cin.ignore();
             std::getline(cin, name); 
             
             float g = getFloatInput("Grade: ");
             float w = getFloatInput("Weight (e.g., 0.25): ");
             
             dmt.addOrUpdate(name, g, w);
-        } 
-        else if (choice == "show") {
+        } else if (choice == "show") {
             dmt.showGrades();
-        } 
-        else if (choice == "average") {
+        } else if (choice == "delete") {
+            string name;
+            cout << "Assignment name: ";
+            cin.ignore();
+            std::getline(cin, name); 
+            dmt.remove(name);
+        } else if (choice == "average") {
             cout << "Current Average: " << dmt.calculateAverage() << "\n";
-        } 
-        else if (choice == "quit") {
+        } else if (choice == "quit") {
             break;
         }
     }
