@@ -1,10 +1,9 @@
-#include <_stdio.h>
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <iomanip>
 
-using std::string, std::unordered_map, std::cout, std::cin, std::stoi, std::fixed, std::setprecision;
+using std::string, std::unordered_map, std::cout, std::cin, std::stof, std::fixed, std::setprecision;
 
 struct grade_t 
 {
@@ -18,7 +17,7 @@ class Class
 static unordered_map<string, grade_t> grades;
 
 public:
-    Class();
+    Class() {}
 
     void addGrade(string name, float grade, float weight){
         grade_t g;
@@ -31,7 +30,7 @@ public:
     }
 
     void showGrades(){
-        std::cout << std::fixed << std::setprecision(4);
+        cout << fixed << setprecision(4);
         for (const auto& [name, g] : grades){
             cout << name << " " << g.grade << " " << g.weight << "\n";
         }
@@ -55,6 +54,8 @@ public:
     
 };
 
+unordered_map<string, grade_t> Class::grades;
+
 int main(){
     Class dmt = Class();
 
@@ -69,12 +70,14 @@ int main(){
             cout << "Input: <name> <grade> <weight>\n";
             string name, grade, weight;
             cin >> name >> grade >> weight;
-            int g = stoi(grade), w = stoi(weight);
+            float g = stof(grade), w = stof(weight);
+            //
+            cout << name << " " << g << " " << w << "\n";
+            //
 
             dmt.addGrade(name, g, w);
 
             cout << name << " added.\n";
-            break;
 
         } else if (input == "show") {
 
@@ -85,12 +88,11 @@ int main(){
             cout << "Input: <name> <grade>\n";
             string name, grade;
             cin >> name >> grade;
-            int g = stoi(grade);
+            float g = stof(grade);
 
             dmt.updateGrade(name, g);
 
             cout << name << " updated to " << g << "\n";
-            break;
 
         } else if (input == "delete") {
 
@@ -101,20 +103,24 @@ int main(){
             dmt.deleteGrade(name);
 
             cout << name << " deleted.\n";
-            break;
 
         } else if (input == "average") {
 
-            std::cout << std::fixed << std::setprecision(4);
+            cout << fixed << setprecision(4);
             cout << "Average: " << dmt.calculateAverage() << "\n";
-            break;
 
         } else if (input == "quit") {
+
             break;
+
         } else {
+
             cout << "Invalid input\n";
+
         }
     }
 
     return 0;
 }
+
+// main();
