@@ -36,6 +36,7 @@
 *.exe
 *.out
 *.app
+gradeapp
 
 # debug information files
 *.dwo
