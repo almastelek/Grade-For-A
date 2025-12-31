@@ -1,6 +1,6 @@
 # Grade Manager CLI
 
-A simple, persistent C++ application for tracking student grades and calculating weighted averages.
+A simple, persistent C++ application for tracking grades and calculating weighted averages.
 
 ## Features
 * **Persistence:** Saves and loads data from a `.csv` file automatically.
