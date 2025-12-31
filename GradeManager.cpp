@@ -4,8 +4,9 @@
 #include <string>
 #include <unordered_map>
 #include <iomanip>
+#include <format>
 
-using std::string, std::unordered_map, std::cout, std::cin, std::fixed, std::setprecision;
+using std::string, std::unordered_map, std::cout, std::cin, std::fixed, std::setprecision, std::format;
 
 void GradeManager::showGrades() const {
     cout << fixed << setprecision(2);
@@ -13,8 +14,14 @@ void GradeManager::showGrades() const {
         cout << "No grades recorded.\n";
         return;
     }
+
+    cout << format("{:<10} {:<10} {:<10}\n", "Name", "Score", "Weight");
+    cout << "----------------------------\n";
+
+
     for (const auto& [name, g] : grades) {
-        cout << "- " << name << ": " << g.score << " (Weight: " << g.weight << ")\n";
+        //cout << "- " << name << ": " << g.score << " (Weight: " << g.weight << ")\n";
+        cout << format("{:<10} {:<10.1f} {:<10.4f}\n", name, g.score, g.weight);
     }
 }
 
