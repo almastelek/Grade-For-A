@@ -13,6 +13,10 @@ private:
 public:
     CourseManager() = default;
 
+    const std::unordered_map<std::string, GradeManager>& getCourses() const;
+
+    GradeManager& getOrCreateCourse(const std::string& name);
+
     void showCourses();
 
     void addCourse(const std::string& name);
