@@ -4,7 +4,9 @@
 #include <sstream>
 #include "GradeManager.h"
 
-void Persistence::saveToFile(const std::string& filename, const GradeManager& manager) {
+using std::string;
+
+void Persistence::saveToFile(const string& filename, const GradeManager& manager) {
     std::ofstream file(filename);
     // We iterate through the grades and save as CSV: name,score,weight
     for (const auto& [name, g] : manager.getGrades()) {
@@ -12,14 +14,14 @@ void Persistence::saveToFile(const std::string& filename, const GradeManager& ma
     }
 }
 
-void Persistence::loadFromFile(const std::string& filename, GradeManager& manager) {
+void Persistence::loadFromFile(const string& filename, GradeManager& manager) {
     std::ifstream file(filename);
     if (!file.is_open()) return;
 
-    std::string line;
+    string line;
     while (std::getline(file, line)) {
         std::stringstream ss(line);
-        std::string name, sScore, sWeight;
+        string name, sScore, sWeight;
 
         if (std::getline(ss, name, ',') && 
             std::getline(ss, sScore, ',') && 
