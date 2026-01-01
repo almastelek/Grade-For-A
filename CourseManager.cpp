@@ -6,6 +6,10 @@
 
 using std::string, std::cout;
 
+const std::unordered_map<std::string, GradeManager>& CourseManager::getCourses() const {
+    return courses;
+}
+
 void CourseManager::showCourses() {
     if (courses.empty()) {
         std::cout << "No courses recorded.\n";
@@ -16,6 +20,10 @@ void CourseManager::showCourses() {
     for (const auto& [name, _] : courses) {
         cout << "- " << name << "\n";
     }
+};
+
+GradeManager& CourseManager::getOrCreateCourse(const std::string& name) {
+        return courses[name];
 };
 
 void CourseManager::addCourse(const string& name) {
