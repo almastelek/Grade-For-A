@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -std=c++20 -Wall -Wextra
 TARGET = gradeapp
 
-SRCS = main.cpp GradeManager.cpp Persistence.cpp
+SRCS = main.cpp GradeManager.cpp Persistence.cpp CourseManager.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
