@@ -26,7 +26,6 @@ static float getFloatInput(const string& prompt) {
         try {
             size_t idx = 0;
             float v = std::stof(raw, &idx);
-            // ensure no trailing junk (allow whitespace)
             while (idx < raw.size() && std::isspace(static_cast<unsigned char>(raw[idx]))) idx++;
             if (idx != raw.size()) throw 1;
             return v;
@@ -40,7 +39,7 @@ int main() {
     CourseManager manager;
     Persistence::loadFromFile("grades.csv", manager);
 
-    string currentCourse; // empty = none selected
+    string currentCourse;
 
     cout << "Loaded courses:\n";
     manager.showCourses();
@@ -75,7 +74,6 @@ int main() {
                 cout << "Course name cannot be empty.\n";
                 continue;
             }
-            // Verify it exists before selecting
             try {
                 (void)manager.getOrCreateCourse(name);
                 currentCourse = name;
